@@ -5,6 +5,9 @@ services:
   mysql:
     image: mysql:latest
     container_name: mysql-container1
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE_CLIENT}
@@ -22,6 +25,9 @@ services:
   consul:
     image: consul:1.15.4
     container_name: consul-container
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     ports:
       - "${CONSUL_PORT:-8500}:8500"
     networks:
@@ -31,7 +37,12 @@ services:
   eureka-server:
     build:
       context: ../server_eureka
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: eureka-server
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     ports:
       - "${EUREKA_PORT:-8761}:8761"
     networks:
@@ -46,6 +57,11 @@ services:
   gateway-service:
     build:
       context: ../gateway
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     ports:
       - "${GATEWAY_PORT:-8888}:8888"
     depends_on:
@@ -66,6 +82,11 @@ services:
   client-service:
     build:
       context: ../client
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     ports:
       - "${CLIENT_PORT:-8088}:8088"
     depends_on:
@@ -91,6 +112,11 @@ services:
   voiture-service:
     build:
       context: ../car
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     ports:
       - "${CAR_PORT:-8089}:8089"
     depends_on:
@@ -116,6 +142,9 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin-container
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     environment:
       PMA_HOST: mysql
       PMA_PORT: ${MYSQL_PORT:-3306}
